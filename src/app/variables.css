@@ -1,0 +1,38 @@
+:root {
+  --primary: #ff4500;
+  --secondary: #fff4f0;
+  --text: #252525;
+  --secondaryText: #959595;
+  --white: #ffffff;
+  --deselected: #d6d6d6;
+  --grey: #b3b3b3;
+  --greyDark: #6e6e73;
+  --greyBorder: #d6d6d6;
+  --greyLight: #f5f5f7;
+
+  --dark_dark: #252525;
+  --dark_greyDark: #3b3b3b;
+  --dark_greyBorder: #5d5d5d;
+  --dark_grey: #919191;
+  --dark_white: #ffffff;
+  --dark_secondary: #432b22;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --text: var(--dark_white);
+    --white: var(--dark_dark);
+    --greyLight: var(--dark_greyDark);
+    --greyDark: var(--dark_grey);
+    --secondary: var(--dark_secondary);
+  }
+}
+
+/* Dark mode variables. These are just for convenience. Overwrite them when that's proper. No accurate 1:1 mapping exist. */
+:root[data-theme="dark"] {
+  --text: var(--dark_white);
+  --white: var(--dark_dark);
+  --greyLight: var(--dark_greyDark);
+  --greyDark: var(--dark_grey);
+  --secondary: var(--dark_secondary);
+}
