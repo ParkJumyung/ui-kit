@@ -18,7 +18,7 @@
   --dark_secondary: #432b22;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
     --text: var(--dark_white);
     --white: var(--dark_dark);
