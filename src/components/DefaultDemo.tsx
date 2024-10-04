@@ -26,7 +26,7 @@ const DefaultDemo = ({ children, variantsConfig }: DefaultDemo) => {
         }
         return child;
       })}
-      <div className="flex w-full h-1 bg-greyBorder rounded my-6"></div>
+      <div className="flex w-full h-[1px] bg-greyBorder rounded my-6"></div>
       <ol className="flex flex-col gap-4">
         {Object.keys(variants).map((variant) => (
           <li key={variant}>

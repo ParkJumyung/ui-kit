@@ -13,7 +13,7 @@ const variantsConfig = {
     big: "",
   },
   divider: {
-    on: "divide-solid divide-greyBorder divide-x-2",
+    on: "divide-solid divide-transparent divide-x-2",
     off: "",
   },
 };

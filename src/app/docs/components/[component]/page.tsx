@@ -1,7 +1,4 @@
-import { Suspense } from "react";
-
-import Select from "@/components/Select/Select";
-
+import Code from "./Code";
 import DynamicDemoComponent from "./DynamicDemoComponent";
 import kebabToPascal from "./kebabToPascal";
 
@@ -29,17 +26,7 @@ const ComponentPage = async ({ params }: ComponentPageProps) => {
       </div>
       <div className="flex flex-col gap-4">
         <div className="text-xl font-semibold">Installation</div>
-        <div className="flex overflow-y-scroll max-h-80 rounded-lg">
-          <Suspense
-            fallback={
-              <div className="w-full h-80 bg-greyLight animate-pulse"></div>
-            }
-          >
-            <code className="block text-sm w-fit h-fit whitespace-pre-wrap bg-greyLight p-8">
-              {code.content}
-            </code>
-          </Suspense>
-        </div>
+        <Code code={code.content} />
       </div>
     </div>
   );
