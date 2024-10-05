@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import path from "path";
 import ts from "typescript";
 
-export const COMPONENTS_DIRECTORY_PATH = "./src/components";
+const COMPONENTS_DIRECTORY_PATH = "./src/components";
 
 const extractImports = (filePath: string): string[] => {
   const sourceCode = fs.readFileSync(filePath, "utf-8");
