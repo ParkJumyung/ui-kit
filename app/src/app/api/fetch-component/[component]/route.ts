@@ -11,6 +11,7 @@ interface ComponentData {
 
 const COMPONENTS_JSON_PATH = path.join(
   process.cwd(),
+  "app",
   "public",
   "components.json"
 );
