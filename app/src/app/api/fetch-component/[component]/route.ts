@@ -1,6 +1,6 @@
-import fs from "fs";
 import { NextResponse } from "next/server";
-import path from "path";
+
+import componentsData from "@/public/components.json";
 
 interface ComponentData {
   name: string;
@@ -9,13 +9,6 @@ interface ComponentData {
   code: string;
 }
 
-const COMPONENTS_JSON_PATH = path.join(
-  process.cwd(),
-  "app",
-  "public",
-  "components.json"
-);
-
 export async function GET(
   request: Request,
   { params }: { params: { component: string } }
@@ -23,9 +16,7 @@ export async function GET(
   const componentName = params.component;
 
   try {
-    const componentData: ComponentData[] = JSON.parse(
-      fs.readFileSync(COMPONENTS_JSON_PATH, "utf-8")
-    );
+    const componentData: ComponentData[] = componentsData;
 
     const component = componentData.find((comp) => comp.name === componentName);
 

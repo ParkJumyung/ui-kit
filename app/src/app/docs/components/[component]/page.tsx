@@ -14,7 +14,7 @@ const ComponentPage = async ({ params }: ComponentPageProps) => {
   let componentData;
   try {
     const response = await fetch(
-      `http://localhost:3000/api/fetch-component/${componentName}`
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/fetch-component/${componentName}`
     );
 
     if (!response.ok) {
