@@ -62,7 +62,7 @@ const generateComponentList = () => {
     })
     .filter(Boolean);
 
-  const outputPath = path.join('./public', 'components.json');
+  const outputPath = path.join("src", './public', 'components.json');
   fs.writeFileSync(outputPath, JSON.stringify(componentData, null, 2));
 
   console.log('Component list generated:', outputPath);
