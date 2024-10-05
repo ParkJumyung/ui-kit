@@ -42,7 +42,16 @@ const ComponentPage = async ({ params }: ComponentPageProps) => {
       </div>
       <div className="flex flex-col gap-4">
         <div className="text-xl font-semibold">Installation</div>
-        <Code code={componentData.code} />
+        <div className="flex flex-col gap-2">
+          <div className="text-base font-semibold">Command</div>
+          <Code>{`npx infoteam-ui-kit@latest add ${componentName}`}</Code>
+        </div>
+        <div className="flex flex-col gap-2">
+          <div className="text-base font-semibold">Manual</div>
+          <Code compact filename={`app/components/ui-kit/${componentName}.tsx`}>
+            {componentData.code}
+          </Code>
+        </div>
       </div>
     </div>
   );

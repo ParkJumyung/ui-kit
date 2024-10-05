@@ -1,6 +1,6 @@
 {
   "name": "infoteam-ui-kit",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "bin": {
     "ui-kit": "./src/bin/index.js"
   },

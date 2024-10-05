@@ -24,6 +24,7 @@ const installPackages = (packages: string[]) => {
   });
 };
 
+// Function to fetch the component and its imports recursively
 const fetchComponent = async (componentName: string) => {
   try {
     const response = await fetch(
@@ -49,9 +50,17 @@ const fetchComponent = async (componentName: string) => {
     );
     createDirectory(componentDir);
 
+    // Write the main component file
     const componentFilePath = path.join(componentDir, `${componentName}.tsx`);
     fs.writeFileSync(componentFilePath, component.code, "utf-8");
     console.log(`Created component file: ${componentFilePath}`);
+
+    // Process dependencies and imports recursively
+    const imports = component.imports || [];
+    for (const importPath of imports) {
+      const sanitizedPath = importPath.replace(/['"]/g, "");
+      await handleImport(sanitizedPath, componentDir);
+    }
 
     if (component.dependencies && component.dependencies.length > 0) {
       installPackages(component.dependencies);
@@ -61,6 +70,52 @@ const fetchComponent = async (componentName: string) => {
   } catch (error) {
     console.error(`Error fetching component`);
     process.exit(1);
+  }
+};
+
+// Function to handle importing of other modules
+const handleImport = async (importPath: string, componentDir: string) => {
+  try {
+    // Make a request to fetch the imported component
+    const response = await fetch(
+      `https://infoteam-ui-kit.vercel.app/api/fetch-component/${importPath}`
+    );
+
+    // Ensure the response is OK
+    if (!response.ok) {
+      throw new Error(
+        `Error fetching imported component: ${response.statusText}`
+      );
+    }
+
+    const importedComponent = await response.json();
+
+    if (!importedComponent || importedComponent.error) {
+      console.error(`Imported component "${importPath}" not found.`);
+      return; // If not found, we just skip
+    }
+
+    // Determine the appropriate file name and path
+    const fileName = path.basename(importPath);
+    const importedFilePath = path.join(
+      componentDir,
+      fileName.endsWith(".tsx") || fileName.endsWith(".ts")
+        ? fileName
+        : `${fileName}.ts`
+    );
+
+    // Write the imported component file
+    fs.writeFileSync(importedFilePath, importedComponent.code, "utf-8");
+    console.log(`Created imported component file: ${importedFilePath}`);
+
+    // Recursively handle the imports of the imported component
+    const importedImports = importedComponent.imports || [];
+    for (const innerImport of importedImports) {
+      const sanitizedInnerImport = innerImport.replace(/['"]/g, "");
+      await handleImport(sanitizedInnerImport, componentDir);
+    }
+  } catch (error) {
+    console.error(`Error processing import "${importPath}"`);
   }
 };
 
