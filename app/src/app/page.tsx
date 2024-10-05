@@ -15,7 +15,7 @@ export default function Home() {
           <span>Ziggle</span>
         </div>
       </div>
-      <Link href={"/docs/components/button"}>
+      <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/docs/components/button`}>
         <Button>Docs</Button>
       </Link>
     </main>

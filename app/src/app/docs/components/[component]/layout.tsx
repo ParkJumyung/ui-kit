@@ -1,22 +1,13 @@
-import fs from "fs";
-import path from "path";
-
+import componentsData from "@/public/components.json";
 import Footer from "@/app/components/Footer/Footer";
 import Header from "@/app/components/Header/Header";
 
 import Sidebar from "./Sidebar";
 
-function getSubfolders(directoryPath: string): string[] {
-  const fullPath = path.join(process.cwd(), directoryPath);
-  return fs.readdirSync(fullPath).filter((file: string) => {
-    const filePath = path.join(fullPath, file);
-    return fs.statSync(filePath).isDirectory();
-  });
-}
-
 const Layout = async ({ children }: { children: React.ReactNode }) => {
-  const subfolders = getSubfolders("src/components");
-  console.log(subfolders);
+  const subfolders = componentsData
+    .filter((x) => /^(?:[^\\]*(?:\\)[^\\]*){3}$/.test(x.path))
+    .map((x) => x.name);
 
   return (
     <div className="flex w-full flex-col justify-center h-full">

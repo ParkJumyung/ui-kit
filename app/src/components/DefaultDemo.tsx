@@ -2,7 +2,7 @@
 
 import React, { Children, PropsWithChildren, useState } from "react";
 
-import { extractDefaultVariants } from "@/lib/utils";
+import { extractDefaultVariants } from "@/components/utils";
 import Tabs from "@/components/Select/Select";
 
 interface DefaultDemo extends PropsWithChildren {
