@@ -13,7 +13,10 @@ interface ComponentPageProps {
 const ComponentPage = async ({ params }: ComponentPageProps) => {
   const componentName = kebabToPascal(params.component);
 
-  let componentData: ComponentDataType[];
+  let componentsData: {
+    component: ComponentDataType;
+    dependentFiles: ComponentDataType[];
+  };
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/fetch-component/${componentName}`
@@ -23,8 +26,8 @@ const ComponentPage = async ({ params }: ComponentPageProps) => {
       throw new Error("Component not found");
     }
 
-    componentData = await response.json();
-    console.log(componentData);
+    componentsData = await response.json();
+    console.log(componentsData);
   } catch (error) {
     console.error("Error fetching component data:", error);
     return (
@@ -33,6 +36,8 @@ const ComponentPage = async ({ params }: ComponentPageProps) => {
       </div>
     );
   }
+
+  console.log(componentsData);
 
   return (
     <div className="flex flex-col gap-8 w-full">
@@ -51,11 +56,14 @@ const ComponentPage = async ({ params }: ComponentPageProps) => {
         </div>
         <div className="flex flex-col gap-2">
           <div className="text-base font-semibold">Manual</div>
-          {/* {componentData.map(({ code, path }) => (
+          <Code compact filename={componentsData.component.path}>
+            {componentsData.component.code}
+          </Code>
+          {componentData.dependentFiles.map(({ code, path }) => (
             <Code key={path} compact filename={path}>
               {code}
             </Code>
-          ))} */}
+          ))}
         </div>
       </div>
     </div>
