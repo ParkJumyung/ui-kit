@@ -17,6 +17,7 @@ const ComponentPage = async ({ params }: ComponentPageProps) => {
     component: ComponentDataType;
     dependentFiles: ComponentDataType[];
   };
+
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/fetch-component/${componentName}`
@@ -27,7 +28,6 @@ const ComponentPage = async ({ params }: ComponentPageProps) => {
     }
 
     componentsData = await response.json();
-    console.log(componentsData);
   } catch (error) {
     console.error("Error fetching component data:", error);
     return (
@@ -37,7 +37,7 @@ const ComponentPage = async ({ params }: ComponentPageProps) => {
     );
   }
 
-  console.log(componentsData);
+  const { component, dependentFiles } = componentsData;
 
   return (
     <div className="flex flex-col gap-8 w-full">
@@ -51,17 +51,25 @@ const ComponentPage = async ({ params }: ComponentPageProps) => {
       <div className="flex flex-col gap-4">
         <div className="text-xl font-semibold">Installation</div>
         <div className="flex flex-col gap-2">
-          <div className="text-base font-semibold">Command</div>
+          <div className="text-lg font-semibold">With Command</div>
           <Code>{`npx infoteam-ui-kit@latest add ${componentName}`}</Code>
         </div>
         <div className="flex flex-col gap-2">
-          <div className="text-base font-semibold">Manual</div>
-          <Code compact filename={componentsData.component.path}>
-            {componentsData.component.code}
+          <div className="text-lg font-semibold">Manually</div>
+          <div className="text-base font-semibold">1. Add component file</div>
+          <Code compact filename={component.path}>
+            {component.code}
           </Code>
-          {componentsData.dependentFiles.map(({ code, path }) => (
+          <div className="text-base font-semibold">2. Add imported files</div>
+          {dependentFiles.map(({ code, path }) => (
             <Code key={path} compact filename={path}>
               {code}
+            </Code>
+          ))}
+          <div className="text-base font-semibold">3. Install dependencies</div>
+          {component.dependencies.map((dependency) => (
+            <Code key={dependency} filename={"npm"}>
+              {`npm install ${dependency}`}
             </Code>
           ))}
         </div>

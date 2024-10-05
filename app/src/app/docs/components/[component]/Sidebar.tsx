@@ -26,7 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({ subfolders }) => {
           <li key={folder}>
             <Link
               className="text-text justify-center flex px-4 py-2 rounded hover:bg-greyDark"
-              href={`http://localhost:3000/docs/components/${folder}`}
+              href={`${process.env.NEXT_PUBLIC_BASE_URL}/docs/components/${folder}`}
             >
               {folder}
             </Link>

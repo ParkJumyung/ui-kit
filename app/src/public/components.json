@@ -25,13 +25,6 @@
     "code": "\"use client\";\r\n\r\nimport { cva, type VariantProps } from \"class-variance-authority\";\r\nimport * as React from \"react\";\r\n\r\nimport Button from \"../Button/Button\";\r\nimport { cn } from \"../utils\";\r\n\r\nconst variantsConfig = {\r\n  size: {\r\n    small: \"\",\r\n    big: \"\",\r\n  },\r\n  divider: {\r\n    on: \"divide-solid divide-transparent divide-x-2\",\r\n    off: \"\",\r\n  },\r\n};\r\n\r\nconst variants = cva(\"inline-flex rounded-md shadow-sm overflow-clip\", {\r\n  variants: variantsConfig,\r\n  defaultVariants: {\r\n    size: \"small\",\r\n    divider: \"on\",\r\n  },\r\n});\r\n\r\nexport interface SelectProps\r\n  extends Omit<\r\n      React.SelectHTMLAttributes<HTMLSelectElement>,\r\n      \"onChange\" | \"size\"\r\n    >,\r\n    VariantProps<typeof variants> {\r\n  options: string[];\r\n  value: string;\r\n  onChange: (value: string) => void;\r\n}\r\n\r\nconst Select = React.forwardRef<HTMLSelectElement, SelectProps>(\r\n  ({ className, size, divider, value, options, onChange, ...props }, ref) => {\r\n    return (\r\n      <div>\r\n        <select\r\n          value={value}\r\n          className=\"hidden\"\r\n          ref={ref}\r\n          onChange={(e) => onChange(e.target.value)}\r\n          {...props}\r\n        >\r\n          {options.map((option) => (\r\n            <option key={option} value={option}>\r\n              {option}\r\n            </option>\r\n          ))}\r\n        </select>\r\n\r\n        <div\r\n          className={cn(variants({ size, divider, className }))}\r\n          role=\"group\"\r\n        >\r\n          {options.map((option) => (\r\n            <div key={option}>\r\n              <Button\r\n                variant={option === value ? \"fill\" : \"sub\"}\r\n                size={size}\r\n                onClick={() => onChange(option)}\r\n                className={`rounded-none active:scale-100 border-none`}\r\n              >\r\n                {option}\r\n              </Button>\r\n            </div>\r\n          ))}\r\n        </div>\r\n      </div>\r\n    );\r\n  }\r\n);\r\nSelect.displayName = \"Select\";\r\n\r\nexport default Select;\r\nexport { variantsConfig };\r\n"
   },
   {
-    "name": "Something",
-    "path": "src\\components\\Select\\Something.tsx",
-    "imports": [],
-    "dependencies": [],
-    "code": ""
-  },
-  {
     "name": "utils",
     "path": "src\\components\\utils.ts",
     "imports": [],

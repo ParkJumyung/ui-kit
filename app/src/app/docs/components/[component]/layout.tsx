@@ -5,7 +5,9 @@ import Header from "@/app/components/Header/Header";
 import Sidebar from "./Sidebar";
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
-  const subfolders = componentsData.map((x) => x.name);
+  const subfolders = componentsData
+    .filter((x) => /^(?:[^\\]*(?:\\)[^\\]*){3}$/.test(x.path))
+    .map((x) => x.name);
 
   return (
     <div className="flex w-full flex-col justify-center h-full">
