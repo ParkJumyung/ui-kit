@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env node
 
 import { execSync } from "child_process";
 import fs from "fs";
@@ -53,8 +53,8 @@ const fetchComponent = async (componentName: string) => {
     fs.writeFileSync(componentFilePath, component.code, "utf-8");
     console.log(`Created component file: ${componentFilePath}`);
 
-    if (component.imports && component.imports.length > 0) {
-      installPackages(component.imports);
+    if (component.dependencies && component.dependencies.length > 0) {
+      installPackages(component.dependencies);
     }
 
     console.log(`Component "${componentName}" successfully added!`);

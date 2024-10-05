@@ -6,6 +6,7 @@ interface ComponentData {
   name: string;
   path: string;
   imports: string[];
+  dependencies: string[];
   code: string;
 }
 

@@ -6,7 +6,7 @@ import ts from 'typescript';
  * @param {string} filePath - Path to the TypeScript file.
  * @returns {string[]} List of import paths.
  */
-const extractImports = (filePath) => {
+const extractDependencies = (filePath) => {
   const sourceCode = fs.readFileSync(filePath, 'utf-8');
 
   const sourceFile = ts.createSourceFile(
@@ -16,17 +16,25 @@ const extractImports = (filePath) => {
     true
   );
 
+  const dependencies = [];
   const imports = [];
 
   ts.forEachChild(sourceFile, function visit(node) {
     if (ts.isImportDeclaration(node) && node.moduleSpecifier) {
       const importPath = node.moduleSpecifier.getText(sourceFile).replace(/['"]/g, '');
-      imports.push(importPath);
+      if (!importPath.includes('/')) {
+        dependencies.push(importPath);
+      } else {
+        imports.push(importPath);
+      }
     }
     ts.forEachChild(node, visit);
   });
 
-  return imports;
+  return {
+    dependencies,
+    imports
+  };
 };
 
 const generateComponentList = () => {
@@ -48,12 +56,13 @@ const generateComponentList = () => {
 
         if (fs.existsSync(componentFilePath)) {
           const fileContents = fs.readFileSync(componentFilePath, 'utf-8');
-          const imports = extractImports(componentFilePath);
+          const { imports, dependencies } = extractDependencies(componentFilePath);
 
           return {
             name: component,
             path: componentFilePath,
             imports: imports,
+            dependencies: dependencies,
             code: fileContents,
           };
         }

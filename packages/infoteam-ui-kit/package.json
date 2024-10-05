@@ -1,11 +1,11 @@
 {
   "name": "infoteam-ui-kit",
-  "version": "1.0.0",
+  "version": "1.0.7",
   "bin": {
-    "ui-kit": "./src/fetchComponent.ts"
+    "ui-kit": "./src/bin/index.js"
   },
   "scripts": {
-    "start": "node ./src/fetchComponent.ts",
+    "start": "node ./bin/index.js",
     "build": "tsc"
   },
   "dependencies": {
