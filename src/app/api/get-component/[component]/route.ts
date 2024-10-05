@@ -36,7 +36,6 @@ export async function GET(
 ) {
   const componentName = params.component;
   const componentPath = path.join(
-    process.cwd(),
     COMPONENTS_DIRECTORY_PATH,
     componentName,
     componentName + ".tsx"

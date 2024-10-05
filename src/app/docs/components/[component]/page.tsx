@@ -11,7 +11,7 @@ interface ComponentPageProps {
 const ComponentPage = async ({ params }: ComponentPageProps) => {
   const componentName = kebabToPascal(params.component);
   const code = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/get-component/${componentName}`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-component/${componentName}`
   ).then((data) => data.json());
 
   return (
