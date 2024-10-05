@@ -1,3 +1,5 @@
+import { ComponentDataType } from "@/app/api/fetch-component/[component]/route";
+
 import Code from "./Code";
 import DynamicDemoComponent from "./DynamicDemoComponent";
 import kebabToPascal from "./kebabToPascal";
@@ -11,7 +13,7 @@ interface ComponentPageProps {
 const ComponentPage = async ({ params }: ComponentPageProps) => {
   const componentName = kebabToPascal(params.component);
 
-  let componentData;
+  let componentData: ComponentDataType[];
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/fetch-component/${componentName}`
@@ -22,6 +24,7 @@ const ComponentPage = async ({ params }: ComponentPageProps) => {
     }
 
     componentData = await response.json();
+    console.log(componentData);
   } catch (error) {
     console.error("Error fetching component data:", error);
     return (
@@ -48,9 +51,11 @@ const ComponentPage = async ({ params }: ComponentPageProps) => {
         </div>
         <div className="flex flex-col gap-2">
           <div className="text-base font-semibold">Manual</div>
-          <Code compact filename={`app/components/ui-kit/${componentName}.tsx`}>
-            {componentData.code}
-          </Code>
+          {/* {componentData.map(({ code, path }) => (
+            <Code key={path} compact filename={path}>
+              {code}
+            </Code>
+          ))} */}
         </div>
       </div>
     </div>

@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
+import path from "path";
 
 import componentsData from "@/public/components.json";
+import kebabToPascal from "@/app/docs/components/[component]/kebabToPascal";
 
-interface ComponentData {
+export interface ComponentDataType {
   name: string;
   path: string;
   imports: string[];
@@ -17,9 +19,22 @@ export async function GET(
   const componentName = params.component;
 
   try {
-    const componentData: ComponentData[] = componentsData;
+    const componentData: ComponentDataType[] = componentsData;
 
-    const component = componentData.find((comp) => comp.name === componentName);
+    const component = componentData.find(
+      (comp) => comp.name === kebabToPascal(componentName)
+    );
+
+    console.log(component?.imports);
+
+    const dependentFiles =
+      component?.imports.map((importPath) =>
+        componentData.find(
+          (comp) =>
+            comp.path.replace(/\.[^/.]+$/, "") ===
+            path.join(component.path, "..", importPath)
+        )
+      ) ?? [];
 
     if (!component) {
       return NextResponse.json(
@@ -28,7 +43,7 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(component);
+    return NextResponse.json([component, ...dependentFiles]);
   } catch (error) {
     console.error("Error reading component data:", error);
     return NextResponse.json(

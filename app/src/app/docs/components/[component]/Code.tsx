@@ -14,11 +14,11 @@ const Code = ({ children, compact, filename }: CodeProps) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   return (
-    <div className="flex flex-col items-end">
+    <div className="flex flex-col w-full items-end">
       {filename && <div className="text-greyDark text-sm">{filename}</div>}
       <div
         className={`
-        flex flex-col bg-greyLight rounded-lg 
+        flex flex-col bg-greyLight rounded-lg w-full 
         ${compact && !isExpanded && "overflow-y-scroll"}
         ${!isExpanded && "max-h-80"} 
         `}
