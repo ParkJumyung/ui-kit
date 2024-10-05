@@ -10,9 +10,26 @@ interface ComponentPageProps {
 
 const ComponentPage = async ({ params }: ComponentPageProps) => {
   const componentName = kebabToPascal(params.component);
-  const code = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-component/${componentName}`
-  ).then((data) => data.json());
+
+  let componentData;
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/fetch-component/${componentName}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Component not found");
+    }
+
+    componentData = await response.json();
+  } catch (error) {
+    console.error("Error fetching component data:", error);
+    return (
+      <div className="text-red-500">
+        <p>Error fetching component data</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-8 w-full">
@@ -25,7 +42,7 @@ const ComponentPage = async ({ params }: ComponentPageProps) => {
       </div>
       <div className="flex flex-col gap-4">
         <div className="text-xl font-semibold">Installation</div>
-        <Code code={code.content} />
+        <Code code={componentData.code} />
       </div>
     </div>
   );
