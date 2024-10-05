@@ -59,7 +59,7 @@ const ComponentPage = async ({ params }: ComponentPageProps) => {
           <Code compact filename={componentsData.component.path}>
             {componentsData.component.code}
           </Code>
-          {componentData.dependentFiles.map(({ code, path }) => (
+          {componentsData.dependentFiles.map(({ code, path }) => (
             <Code key={path} compact filename={path}>
               {code}
             </Code>
