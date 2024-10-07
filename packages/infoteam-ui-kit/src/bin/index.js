@@ -5,11 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fetchComponent_1 = __importDefault(require("../fetchComponent")); // Adjust path as necessary
+const getStylingFiles_1 = __importDefault(require("../getStylingFiles"));
 // Get the component name from the command line arguments
 const [, , command, componentName] = process.argv;
 // Ensure the "add" command and component name are provided
 if (command === "add" && componentName) {
     (0, fetchComponent_1.default)(componentName);
+    (0, getStylingFiles_1.default)();
 }
 else {
     console.error("Usage: npx ui-kit add <ComponentName>");

@@ -71,11 +71,44 @@ const findFilesInDirectory = (dir) => {
   return componentData;
 };
 
+/**
+ * Reads and generates a list of stylesheets (globals.css and variables.css).
+ */
+const generateStylesList = () => {
+  const styles = [];
+  const styleFiles = [
+    { name: 'variables.css', path: './src/app/variables.css' },
+    { name: 'globals.css', path: './src/app/globals.css' }
+  ];
+
+  for (const styleFile of styleFiles) {
+    const fullPath = path.resolve(styleFile.path);
+    if (fs.existsSync(fullPath)) {
+      const code = fs.readFileSync(fullPath, 'utf-8');
+      styles.push({
+        name: styleFile.name,
+        path: styleFile.path,
+        code
+      });
+    } else {
+      console.warn(`Style file not found: ${styleFile.path}`);
+    }
+  }
+
+  const outputPath = path.join('src', 'public', 'styles.json');
+  fs.writeFileSync(outputPath, JSON.stringify(styles, null, 2));
+
+  console.log('Styles list generated:', outputPath);
+};
+
+/**
+ * Generates component list and styles list.
+ */
 const generateComponentList = () => {
   const COMPONENTS_DIRECTORY_PATH = './src/components';
 
   if (!fs.existsSync(COMPONENTS_DIRECTORY_PATH)) {
-    console.warn('Components directory does not exist. Skipping generation.');
+    console.warn('Components directory does not exist. Skipping component generation.');
     return;
   }
 
@@ -93,6 +126,7 @@ const nextConfig = {
   webpack: (config, { isServer }) => {
     if (isServer) {
       generateComponentList();
+      generateStylesList();  // Also generate the styles list during build time
     }
     return config;
   },
