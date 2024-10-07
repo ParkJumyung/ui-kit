@@ -7,17 +7,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const child_process_1 = require("child_process");
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+// Function to create a directory if it doesn't exist
 const createDirectory = (dirPath) => {
     if (!fs_1.default.existsSync(dirPath)) {
         fs_1.default.mkdirSync(dirPath, { recursive: true });
         console.log(`Created directory: ${dirPath}`);
     }
 };
+// Function to install missing npm packages
 const installPackages = (packages) => {
     console.log("Checking for missing packages...");
     packages.forEach((pkg) => {
         try {
             require.resolve(pkg);
+            console.log(`Package ${pkg} is already installed.`);
         }
         catch (error) {
             console.log(`Installing missing package: ${pkg}`);
@@ -25,7 +28,21 @@ const installPackages = (packages) => {
         }
     });
 };
-// Function to fetch the component and its imports recursively
+// Recursive function to install all dependencies
+const installDependenciesRecursively = (dependencies, dependentFiles) => {
+    const packagesToInstall = new Set(dependencies);
+    // Iterate through all dependent files to find more dependencies
+    dependentFiles.forEach((file) => {
+        if (file.dependencies && file.dependencies.length > 0) {
+            file.dependencies.forEach((dep) => packagesToInstall.add(dep));
+        }
+    });
+    // Install all gathered packages
+    if (packagesToInstall.size > 0) {
+        installPackages(Array.from(packagesToInstall));
+    }
+};
+// Function to fetch the component and its dependencies recursively
 const fetchComponent = async (componentName) => {
     try {
         const response = await fetch(`https://infoteam-ui-kit.vercel.app/api/fetch-component/${componentName}`);
@@ -52,14 +69,15 @@ const fetchComponent = async (componentName) => {
             fs_1.default.writeFileSync(sanitizedPath, dependentFile.code, "utf-8");
             console.log(`Created component file: ${sanitizedPath}`);
         }
+        // Install dependencies recursively
         if (componentsData.component.dependencies &&
             componentsData.component.dependencies.length > 0) {
-            installPackages(componentsData.component.dependencies);
+            installDependenciesRecursively(componentsData.component.dependencies, dependentFiles);
         }
         console.log(`Component "${componentName}" successfully added!`);
     }
     catch (error) {
-        console.error(`Error fetching component`);
+        console.error(`Error fetching component: ${error}`);
         process.exit(1);
     }
 };

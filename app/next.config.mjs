@@ -78,7 +78,8 @@ const generateStylesList = () => {
   const styles = [];
   const styleFiles = [
     { name: 'variables.css', path: './src/app/variables.css' },
-    { name: 'globals.css', path: './src/app/globals.css' }
+    { name: 'globals.css', path: './src/app/globals.css' },
+    { name: 'tailwind.config.ts', path: './tailwind.config.ts' }
   ];
 
   for (const styleFile of styleFiles) {
