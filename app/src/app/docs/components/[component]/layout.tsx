@@ -6,7 +6,7 @@ import Sidebar from "./Sidebar";
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
   const subfolders = componentsData
-    .filter((x) => /^(?:[^\\]*(?:\\)[^\\]*){3}$/.test(x.path))
+    .filter((x) => /^(?:[^\\]*(?:\\)[^\\]*){2}$/.test(x.path))
     .map((x) => x.name);
 
   return (
