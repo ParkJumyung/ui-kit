@@ -2,6 +2,7 @@ import { ComponentDataType } from "@/app/api/fetch-component/[component]/route";
 
 import Code from "./Code";
 import DynamicDemoComponent from "./DynamicDemoComponent";
+import fetchComponent from "./fetchComponent";
 import kebabToPascal from "./kebabToPascal";
 
 interface ComponentPageProps {
@@ -19,15 +20,7 @@ const ComponentPage = async ({ params }: ComponentPageProps) => {
   };
 
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/fetch-component/${componentName}`
-    );
-
-    if (!response.ok) {
-      throw new Error("Component not found");
-    }
-
-    componentsData = await response.json();
+    componentsData = fetchComponent(componentName);
   } catch (error) {
     console.error("Error fetching component data:", error);
     return (
